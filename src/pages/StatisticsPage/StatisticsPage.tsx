@@ -1,8 +1,15 @@
+import { ModePageHeader } from '../../components/ModePageHeader/ModePageHeader'
+
 export function StatisticsPage() {
   return (
-    <section aria-labelledby="statistics-heading">
-      <h1 id="statistics-heading">Statistics</h1>
-      <p>Overall learning progress will be shown here. Coming soon.</p>
+    <section aria-labelledby="statistics-heading" className="page-hero page-hero--roomy">
+      <ModePageHeader
+        variant="stats"
+        eyebrow="Stats Mode"
+        title="Statistics"
+        subtitle="Overall learning progress will be shown here. Coming soon."
+        headingId="statistics-heading"
+      />
     </section>
   )
 }

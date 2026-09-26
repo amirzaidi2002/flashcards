@@ -1,6 +1,8 @@
 import { render, screen, within } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { MemoryRouter } from 'react-router-dom'
 import { describe, expect, it } from 'vitest'
+import { seedDecks } from './data/seed'
 import App from './App'
 
 function renderApp(path: string) {
@@ -19,7 +21,7 @@ describe('App routing', () => {
 
   it('renders the Study page at /study', () => {
     renderApp('/study')
-    expect(screen.getByRole('heading', { name: /study/i })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: /^study$/i })).toBeInTheDocument()
   })
 
   it('renders the Quiz page at /quiz', () => {
@@ -53,5 +55,35 @@ describe('App routing', () => {
     for (const label of ['Study', 'Quiz', 'Decks', 'Statistics', 'Import']) {
       expect(within(nav).getByRole('link', { name: label })).toBeInTheDocument()
     }
+  })
+
+  it('navigates from the Decks page to a deck-specific Study screen without a page reload', async () => {
+    const user = userEvent.setup()
+    renderApp('/decks')
+
+    const [firstDeck] = seedDecks
+    const heading = screen.getByRole('heading', { name: firstDeck.name })
+    const card = heading.closest('article')
+    const studyLink = within(card!).getByRole('link', { name: /study/i })
+
+    await user.click(studyLink)
+
+    expect(await screen.findByRole('heading', { name: firstDeck.name })).toBeInTheDocument()
+    expect(await screen.findByRole('button', { name: /start studying/i })).toBeInTheDocument()
+    expect(screen.queryByRole('heading', { name: /^decks$/i })).not.toBeInTheDocument()
+  })
+
+  it('navigates from the Decks page to a deck-specific Quiz screen without a page reload', async () => {
+    const user = userEvent.setup()
+    renderApp('/decks')
+
+    const [firstDeck] = seedDecks
+    const heading = screen.getByRole('heading', { name: firstDeck.name })
+    const card = heading.closest('article')
+    const quizLink = within(card!).getByRole('link', { name: /quiz/i })
+
+    await user.click(quizLink)
+
+    expect(screen.getByRole('heading', { name: /quiz/i })).toBeInTheDocument()
   })
 })

@@ -1,13 +1,52 @@
 :root {
+  /* Color */
   --text: #3f3d56;
   --text-h: #1a1a2e;
+  --text-muted: #6b6875;
   --bg: #fdfcff;
+  --surface: #ffffff;
   --border: #e5e4e7;
   --accent: #6c5ce7;
+  --accent-hover: #5b4bd6;
   --accent-contrast: #ffffff;
+  --success: #1e9e5a;
+  --danger: #d64545;
+
+  /* Mode hub colors (Home page) */
+  --mode-study: #6c5ce7;
+  --mode-study-hover: #5b4bd6;
+  --mode-quiz: #1f6feb;
+  --mode-quiz-hover: #185ec9;
+  --mode-stats: #0f9b8e;
+  --mode-stats-hover: #0c7d73;
+  --mode-decks: #c2660c;
+  --mode-decks-hover: #a3560a;
+  --mode-import: #c2255c;
+  --mode-import-hover: #a11d4c;
+
+  /* Spacing scale */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+
+  /* Typography scale */
+  --font-size-sm: 0.875rem;
+  --font-size-base: 1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.5rem;
+  --font-size-2xl: 2rem;
+
+  /* Radii */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
 
   font:
-    16px/1.5 system-ui,
+    var(--font-size-base) / 1.5 system-ui,
     'Segoe UI',
     Roboto,
     sans-serif;
@@ -43,6 +82,22 @@ h2,
 h3 {
   color: var(--text-h);
   font-weight: 600;
+  line-height: 1.25;
+}
+
+h1 {
+  font-size: var(--font-size-2xl);
+  margin: 0 0 var(--space-4);
+}
+
+h2 {
+  font-size: var(--font-size-xl);
+  margin: 0 0 var(--space-2);
+}
+
+p {
+  margin: 0 0 var(--space-4);
+  color: var(--text-muted);
 }
 
 button {
@@ -57,12 +112,16 @@ button {
   min-height: 100svh;
 }
 
-.app__content {
+.app__main {
   flex: 1;
+  width: 100%;
+}
+
+.page-container {
   width: 100%;
   max-width: 960px;
   margin: 0 auto;
-  padding: 24px 16px;
+  padding: var(--space-5) var(--space-4);
 }
 
 /* Navigation */
@@ -70,9 +129,9 @@ button {
 .nav {
   display: flex;
   align-items: center;
-  gap: 24px;
+  gap: var(--space-5);
   flex-wrap: wrap;
-  padding: 16px;
+  padding: var(--space-4);
   border-bottom: 1px solid var(--border);
 }
 
@@ -84,7 +143,7 @@ button {
 
 .nav__list {
   display: flex;
-  gap: 8px;
+  gap: var(--space-2);
   flex-wrap: wrap;
   list-style: none;
   margin: 0;
@@ -93,8 +152,8 @@ button {
 
 .nav__link {
   display: inline-block;
-  padding: 8px 12px;
-  border-radius: 8px;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
   text-decoration: none;
   color: var(--text);
   font-weight: 500;
@@ -121,5 +180,401 @@ button:focus-visible {
   .nav {
     flex-direction: column;
     align-items: flex-start;
+  }
+}
+
+/* Button primitive */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-5);
+  border: 2px solid transparent;
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  min-height: 44px;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease;
+}
+
+.btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.btn--primary {
+  background: var(--accent);
+  color: var(--accent-contrast);
+}
+
+.btn--primary:hover:not(:disabled) {
+  background: var(--accent-hover);
+}
+
+.btn--secondary {
+  background: transparent;
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.btn--secondary:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
+}
+
+.btn--ghost {
+  background: transparent;
+  color: var(--text);
+}
+
+.btn--ghost:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--text) 8%, transparent);
+}
+
+.btn--success {
+  background: var(--success);
+  color: var(--accent-contrast);
+}
+
+.btn--danger {
+  background: var(--danger);
+  color: var(--accent-contrast);
+}
+
+/* Home hero + mode hub */
+
+.home-hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-6);
+  min-height: 60svh;
+  padding: var(--space-6) 0;
+  text-align: center;
+}
+
+.home-hero__intro {
+  max-width: 480px;
+}
+
+.home-hero__intro p {
+  margin: 0;
+}
+
+/*
+ * Deliberately a single column at every viewport width, so desktop and
+ * handheld devices present the same "omnichannel" shape rather than the
+ * menu reflowing into a grid on larger screens.
+ */
+.mode-menu {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  width: 100%;
+  max-width: 420px;
+  margin: 0 auto;
+}
+
+.mode-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 64px;
+  padding: var(--space-4) var(--space-5);
+  border-radius: var(--radius-lg);
+  border: none;
+  font-size: var(--font-size-lg);
+  font-weight: 700;
+  color: #fff;
+  text-decoration: none;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease,
+    background-color 0.15s ease;
+}
+
+.mode-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.18);
+}
+
+.mode-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+}
+
+.mode-btn:focus-visible {
+  outline: 3px solid var(--text-h);
+  outline-offset: 3px;
+}
+
+.mode-btn--study {
+  background: var(--mode-study);
+}
+
+.mode-btn--study:hover {
+  background: var(--mode-study-hover);
+}
+
+.mode-btn--quiz {
+  background: var(--mode-quiz);
+}
+
+.mode-btn--quiz:hover {
+  background: var(--mode-quiz-hover);
+}
+
+.mode-btn--stats {
+  background: var(--mode-stats);
+}
+
+.mode-btn--stats:hover {
+  background: var(--mode-stats-hover);
+}
+
+.mode-btn--decks {
+  background: var(--mode-decks);
+}
+
+.mode-btn--decks:hover {
+  background: var(--mode-decks-hover);
+}
+
+.mode-btn--import {
+  background: var(--mode-import);
+}
+
+.mode-btn--import:hover {
+  background: var(--mode-import-hover);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mode-btn {
+    transition: none;
+  }
+}
+
+/*
+ * Shared centered "hero" intro for the mode landing pages (Study, Quiz,
+ * Statistics, Import) — same look and feel as the Home page: centered
+ * content, a colored eyebrow badge matching that mode's button on the
+ * Home page's mode hub, and consistent spacing.
+ */
+.page-hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--space-5);
+  padding: var(--space-6) 0;
+}
+
+.page-hero--roomy {
+  min-height: 50svh;
+  justify-content: center;
+}
+
+.page-hero__intro {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  max-width: 480px;
+}
+
+.page-hero__intro p {
+  margin: 0;
+}
+
+.page-hero__badge {
+  display: inline-flex;
+  padding: var(--space-1) var(--space-3);
+  border-radius: 999px;
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+.page-hero__badge--study {
+  background: var(--mode-study);
+}
+
+.page-hero__badge--quiz {
+  background: var(--mode-quiz);
+}
+
+.page-hero__badge--stats {
+  background: var(--mode-stats);
+}
+
+.page-hero__badge--decks {
+  background: var(--mode-decks);
+}
+
+.page-hero__badge--import {
+  background: var(--mode-import);
+}
+
+.page-hero__section {
+  padding-top: var(--space-5);
+  border-top: 1px solid var(--border);
+  width: 100%;
+  max-width: 420px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+/* Deck grid */
+
+.deck-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: var(--space-5);
+}
+
+.deck-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-5);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  text-align: left;
+}
+
+.deck-card__count {
+  font-size: var(--font-size-sm);
+  color: var(--text-muted);
+  margin: 0 0 var(--space-2);
+}
+
+.deck-card__actions {
+  display: flex;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+  margin-top: var(--space-2);
+}
+
+@media (max-width: 480px) {
+  .deck-card__actions .btn {
+    flex: 1;
+  }
+}
+
+/* Study session */
+
+.study-session__progress {
+  font-weight: 600;
+  color: var(--text-h);
+}
+
+.study-session__actions {
+  display: flex;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: var(--space-4);
+}
+
+/* Flashcard */
+
+.flashcard {
+  width: 100%;
+  max-width: 480px;
+  margin: var(--space-5) auto;
+}
+
+.flashcard__inner {
+  position: relative;
+  width: 100%;
+  min-height: 280px;
+  transform-style: preserve-3d;
+  transition: transform 0.5s ease;
+}
+
+.flashcard__inner--flipped {
+  transform: rotateY(180deg);
+}
+
+.flashcard__face {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  padding: var(--space-6);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  backface-visibility: hidden;
+  text-align: center;
+}
+
+.flashcard__face--front {
+  cursor: pointer;
+}
+
+.flashcard__face--front:disabled {
+  cursor: default;
+  opacity: 1;
+}
+
+.flashcard__face--back {
+  transform: rotateY(180deg);
+}
+
+.flashcard__prompt {
+  font-size: var(--font-size-2xl);
+  font-weight: 700;
+  color: var(--text-h);
+  margin: 0;
+}
+
+.flashcard__prompt--muted {
+  font-size: var(--font-size-lg);
+  font-weight: 500;
+  color: var(--text-muted);
+}
+
+.flashcard__answer {
+  font-size: var(--font-size-2xl);
+  font-weight: 700;
+  color: var(--accent);
+  margin: 0;
+}
+
+.flashcard__hint {
+  font-size: var(--font-size-sm);
+  color: var(--text-muted);
+}
+
+.flashcard__actions {
+  display: flex;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: var(--space-3);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .flashcard__inner {
+    transition: none;
   }
 }

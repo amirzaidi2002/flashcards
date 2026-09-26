@@ -12,7 +12,7 @@ export function AppRoutes() {
     <Routes>
       <Route path="/" element={<HomePage />} />
       <Route path="/study" element={<StudyPage />} />
-      <Route path="/study/review" element={<StudyPage />} />
+      <Route path="/study/review" element={<StudyPage mode="review" />} />
       <Route path="/study/:deckId" element={<StudyPage />} />
       <Route path="/quiz" element={<QuizPage />} />
       <Route path="/quiz/:deckId" element={<QuizPage />} />
