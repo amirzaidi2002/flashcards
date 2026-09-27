@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import type { Flashcard } from '../domain'
+import { makeFlashcard } from '../test/flashcardFactory'
 import {
   flipCard,
   getCurrentCard,
@@ -11,29 +11,9 @@ import {
   startSession,
 } from './StudyService'
 
-function makeCard(
-  id: string,
-  spanish: string,
-  english: string,
-  overrides: Partial<Flashcard> = {},
-): Flashcard {
-  return {
-    id,
-    spanish,
-    english,
-    deckId: 'deck-1',
-    createdAt: '2026-01-01T00:00:00.000Z',
-    updatedAt: '2026-01-01T00:00:00.000Z',
-    timesStudied: 0,
-    correctCount: 0,
-    incorrectCount: 0,
-    ...overrides,
-  }
-}
-
-const cardA = makeCard('card-a', 'hola', 'hello')
-const cardB = makeCard('card-b', 'adiós', 'goodbye')
-const cardC = makeCard('card-c', 'gracias', 'thank you')
+const cardA = makeFlashcard({ id: 'card-a', spanish: 'hola', english: 'hello' })
+const cardB = makeFlashcard({ id: 'card-b', spanish: 'adiós', english: 'goodbye' })
+const cardC = makeFlashcard({ id: 'card-c', spanish: 'gracias', english: 'thank you' })
 
 describe('StudyService', () => {
   it('starts a session with the first card current and nothing completed', () => {
@@ -57,12 +37,18 @@ describe('StudyService', () => {
   })
 
   it('orders the initial queue by adaptive priority, not input order', () => {
-    const missed = makeCard('missed', 'x', 'y', {
+    const missed = makeFlashcard({
+      id: 'missed',
+      spanish: 'x',
+      english: 'y',
       timesStudied: 2,
       incorrectCount: 1,
       lastResult: 'incorrect',
     })
-    const mastered = makeCard('mastered', 'x', 'y', {
+    const mastered = makeFlashcard({
+      id: 'mastered',
+      spanish: 'x',
+      english: 'y',
       timesStudied: 5,
       correctCount: 5,
       lastResult: 'correct',
@@ -175,8 +161,14 @@ describe('StudyService', () => {
   })
 
   it('exposes getReviewCards for retrieving cards that need review', () => {
-    const missed = makeCard('missed', 'x', 'y', { incorrectCount: 1, lastResult: 'incorrect' })
-    const neverStudied = makeCard('fresh', 'x', 'y')
+    const missed = makeFlashcard({
+      id: 'missed',
+      spanish: 'x',
+      english: 'y',
+      incorrectCount: 1,
+      lastResult: 'incorrect',
+    })
+    const neverStudied = makeFlashcard({ id: 'fresh', spanish: 'x', english: 'y' })
 
     expect(getReviewCards([missed, neverStudied])).toEqual([missed])
   })

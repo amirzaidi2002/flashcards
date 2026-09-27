@@ -1,19 +1,9 @@
 import { describe, expect, it } from 'vitest'
-import type { Flashcard } from '../domain'
+import { makeFlashcard } from '../test/flashcardFactory'
 import { InMemoryFlashcardRepository } from './InMemoryFlashcardRepository'
 
-function makeCard(id: string, deckId: string): Flashcard {
-  return {
-    id,
-    spanish: 'hola',
-    english: 'hello',
-    deckId,
-    createdAt: '2026-01-01T00:00:00.000Z',
-    updatedAt: '2026-01-01T00:00:00.000Z',
-    timesStudied: 0,
-    correctCount: 0,
-    incorrectCount: 0,
-  }
+function makeCard(id: string, deckId: string) {
+  return makeFlashcard({ id, deckId })
 }
 
 describe('InMemoryFlashcardRepository', () => {

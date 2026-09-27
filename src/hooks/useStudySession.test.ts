@@ -1,25 +1,12 @@
 import { act, renderHook } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
 import type { Flashcard, StudyResult } from '../domain'
+import { makeFlashcard } from '../test/flashcardFactory'
 import { useStudySession } from './useStudySession'
 
-function makeCard(id: string, spanish: string, english: string): Flashcard {
-  return {
-    id,
-    spanish,
-    english,
-    deckId: 'deck-1',
-    createdAt: '2026-01-01T00:00:00.000Z',
-    updatedAt: '2026-01-01T00:00:00.000Z',
-    timesStudied: 0,
-    correctCount: 0,
-    incorrectCount: 0,
-  }
-}
-
 const cards: Flashcard[] = [
-  makeCard('card-a', 'hola', 'hello'),
-  makeCard('card-b', 'adiós', 'goodbye'),
+  makeFlashcard({ id: 'card-a', spanish: 'hola', english: 'hello' }),
+  makeFlashcard({ id: 'card-b', spanish: 'adiós', english: 'goodbye' }),
 ]
 
 describe('useStudySession', () => {

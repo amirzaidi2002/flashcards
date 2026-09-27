@@ -1,12 +1,12 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Flashcard } from '../../components/Flashcard/Flashcard'
-import { ModePageHeader } from '../../components/ModePageHeader/ModePageHeader'
 import type { Flashcard as FlashcardModel, StudyResult } from '../../domain'
 import { useStudySession } from '../../hooks/useStudySession'
 import { getSessionSummary } from '../../services/StudyService'
 import { buttonClassName } from '../../utils/buttonClassName'
 import { Button } from '../../components/Button/Button'
+import { StudyModeHeader } from './StudyModeHeader'
 
 export interface StudySessionBackLink {
   to: string
@@ -61,13 +61,7 @@ export function StudySessionRunner({
     if (cards.length === 0) {
       return (
         <section aria-labelledby="study-heading" className="page-hero page-hero--roomy">
-          <ModePageHeader
-            variant="study"
-            eyebrow="Study Mode"
-            title={title}
-            subtitle={emptyStateMessage}
-            headingId="study-heading"
-          />
+          <StudyModeHeader title={title} subtitle={emptyStateMessage} headingId="study-heading" />
           <Link to={backLink.to} className={buttonClassName('primary')}>
             {backLink.label}
           </Link>
@@ -78,9 +72,7 @@ export function StudySessionRunner({
     const cardLabel = `${cards.length} ${cards.length === 1 ? 'card' : 'cards'}`
     return (
       <section aria-labelledby="study-heading" className="page-hero page-hero--roomy">
-        <ModePageHeader
-          variant="study"
-          eyebrow="Study Mode"
+        <StudyModeHeader
           title={title}
           subtitle={`${cardLabel} to study.`}
           headingId="study-heading"
@@ -97,9 +89,7 @@ export function StudySessionRunner({
     const summary = getSessionSummary(session.state)
     return (
       <section aria-labelledby="summary-heading" className="page-hero page-hero--roomy">
-        <ModePageHeader
-          variant="study"
-          eyebrow="Study Mode"
+        <StudyModeHeader
           title="Session complete"
           subtitle={`You studied ${summary.cardsCompleted} ${summary.cardsCompleted === 1 ? 'card' : 'cards'} from ${title}.`}
           headingId="summary-heading"
@@ -127,12 +117,7 @@ export function StudySessionRunner({
 
   return (
     <section aria-labelledby="study-heading" className="page-hero">
-      <ModePageHeader
-        variant="study"
-        eyebrow="Study Mode"
-        title={title}
-        headingId="study-heading"
-      />
+      <StudyModeHeader title={title} headingId="study-heading" />
       <p className="study-session__progress" role="status">
         Card {cardNumber} of {session.totalCards}
       </p>

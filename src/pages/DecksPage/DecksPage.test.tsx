@@ -39,13 +39,14 @@ describe('DecksPage', () => {
       const card = heading.closest('article')
       expect(card).not.toBeNull()
 
-      const studyLink = card!.querySelector(`a[href="/study/${deck.id}"]`)
-      const quizLink = card!.querySelector(`a[href="/quiz/${deck.id}"]`)
-
-      expect(studyLink).not.toBeNull()
-      expect(studyLink).toHaveTextContent(/study/i)
-      expect(quizLink).not.toBeNull()
-      expect(quizLink).toHaveTextContent(/quiz/i)
+      expect(within(card!).getByRole('link', { name: /study/i })).toHaveAttribute(
+        'href',
+        `/study/${deck.id}`,
+      )
+      expect(within(card!).getByRole('link', { name: /quiz/i })).toHaveAttribute(
+        'href',
+        `/quiz/${deck.id}`,
+      )
     }
   })
 })

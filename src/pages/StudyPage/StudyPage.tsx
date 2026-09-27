@@ -6,7 +6,7 @@ import { useReviewCards } from '../../hooks/useReviewCards'
 import { flashcardRepository } from '../../repositories/flashcardRepositoryInstance'
 import { applyStudyResult } from '../../services/CardLearningService'
 import { buttonClassName } from '../../utils/buttonClassName'
-import { ModePageHeader } from '../../components/ModePageHeader/ModePageHeader'
+import { StudyModeHeader } from './StudyModeHeader'
 import { StudySessionRunner } from './StudySessionRunner'
 
 export interface StudyPageProps {
@@ -32,12 +32,7 @@ function persistAnswer(card: Flashcard, result: StudyResult) {
 function LoadingSection() {
   return (
     <section aria-labelledby="study-heading" className="page-hero page-hero--roomy">
-      <ModePageHeader
-        variant="study"
-        eyebrow="Study Mode"
-        title="Loading…"
-        headingId="study-heading"
-      />
+      <StudyModeHeader title="Loading…" headingId="study-heading" />
     </section>
   )
 }
@@ -57,9 +52,7 @@ export function StudyPage({ mode }: StudyPageProps) {
   if (!deck) {
     return (
       <section aria-labelledby="study-heading" className="page-hero page-hero--roomy">
-        <ModePageHeader
-          variant="study"
-          eyebrow="Study Mode"
+        <StudyModeHeader
           title="Deck not found"
           subtitle="We couldn't find that deck."
           headingId="study-heading"
@@ -81,9 +74,7 @@ function StudyHome() {
 
   return (
     <section aria-labelledby="study-heading" className="page-hero page-hero--roomy">
-      <ModePageHeader
-        variant="study"
-        eyebrow="Study Mode"
+      <StudyModeHeader
         title="Study"
         subtitle="Select a deck to start studying."
         headingId="study-heading"
