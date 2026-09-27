@@ -29,5 +29,11 @@ export default tseslint.config(
       globals: globals.vitest,
     },
   },
+  {
+    files: ['playwright.config.ts', 'e2e/**/*.ts'],
+    languageOptions: {
+      globals: globals.node,
+    },
+  },
   eslintConfigPrettier,
 )

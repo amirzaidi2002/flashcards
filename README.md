@@ -9,7 +9,8 @@ phased implementation checklist.
 
 - [React](https://react.dev/) + [TypeScript](https://www.typescriptlang.org/) + [Vite](https://vite.dev/)
 - [React Router](https://reactrouter.com/) for client-side routing
-- [Vitest](https://vitest.dev/) + [React Testing Library](https://testing-library.com/react) for testing
+- [Vitest](https://vitest.dev/) + [React Testing Library](https://testing-library.com/react) for unit/component testing
+- [Playwright](https://playwright.dev/) for end-to-end testing
 - [ESLint](https://eslint.org/) + [Prettier](https://prettier.io/) for linting/formatting
 - IndexedDB (via a repository abstraction) for local persistence (added in a later phase)
 
@@ -24,19 +25,21 @@ The app is served at the URL printed in the terminal (typically `http://localhos
 
 ## Available scripts
 
-| Script                 | Description                              |
-| ---------------------- | ---------------------------------------- |
-| `npm run dev`          | Start the Vite dev server with HMR       |
-| `npm run build`        | Type-check and build for production      |
-| `npm run preview`      | Preview the production build locally     |
-| `npm run typecheck`    | Run the TypeScript compiler with no emit |
-| `npm run lint`         | Lint the codebase with ESLint            |
-| `npm run lint:fix`     | Lint and auto-fix where possible         |
-| `npm run format`       | Format the codebase with Prettier        |
-| `npm run format:check` | Check formatting without writing changes |
-| `npm test`             | Run the test suite once with Vitest      |
-| `npm run test:watch`   | Run the test suite in watch mode         |
-| `npm run test:ui`      | Run the test suite with the Vitest UI    |
+| Script                 | Description                                                                       |
+| ---------------------- | --------------------------------------------------------------------------------- |
+| `npm run dev`          | Start the Vite dev server with HMR                                                |
+| `npm run build`        | Type-check and build for production                                               |
+| `npm run preview`      | Preview the production build locally                                              |
+| `npm run typecheck`    | Run the TypeScript compiler with no emit                                          |
+| `npm run lint`         | Lint the codebase with ESLint                                                     |
+| `npm run lint:fix`     | Lint and auto-fix where possible                                                  |
+| `npm run format`       | Format the codebase with Prettier                                                 |
+| `npm run format:check` | Check formatting without writing changes                                          |
+| `npm test`             | Run the unit/component test suite once with Vitest                                |
+| `npm run test:watch`   | Run the unit/component test suite in watch mode                                   |
+| `npm run test:ui`      | Run the unit/component test suite with the Vitest UI                              |
+| `npm run test:e2e`     | Run the Playwright end-to-end test suite (starts its own dev server on port 5183) |
+| `npm run test:e2e:ui`  | Run the Playwright suite with its interactive UI mode                             |
 
 ## Project structure
 
@@ -60,3 +63,6 @@ src/
 The UI layer never talks to IndexedDB directly — it goes through services and
 repositories — so the storage backend can later be swapped for a remote API
 without rewriting the UI or business logic.
+
+End-to-end tests live outside `src/`, in `e2e/` at the project root, and drive
+the app through a real browser via Playwright (see `playwright.config.ts`).

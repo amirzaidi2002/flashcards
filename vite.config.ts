@@ -1,6 +1,6 @@
 import { fileURLToPath, URL } from 'node:url'
 import react from '@vitejs/plugin-react'
-import { defineConfig } from 'vitest/config'
+import { configDefaults, defineConfig } from 'vitest/config'
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -15,5 +15,9 @@ export default defineConfig({
     globals: true,
     setupFiles: ['./src/test/setup.ts'],
     css: true,
+    // `e2e/**` holds Playwright specs, which use @playwright/test's own
+    // test runner/globals rather than Vitest's, so they must never be
+    // collected here.
+    exclude: [...configDefaults.exclude, 'e2e/**'],
   },
 })
